@@ -1,0 +1,78 @@
+/* General Styling */
+body {
+  background-color: #f9f9f9;
+  font-family: 'Arial', sans-serif;
+}
+
+/* Card Styling */
+.card {
+  border-radius: 10px;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+}
+
+.card-img-top {
+  object-fit: cover;
+  height: 200px;
+}
+
+.card-title {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.card-footer {
+  background-color: #fff;
+  border-top: none;
+  padding: 10px 15px;
+}
+
+/* Buttons */
+button {
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:disabled {
+  background-color: #d6d6d6 !important;
+  cursor: not-allowed;
+}
+
+button:not(:disabled):hover {
+  transform: translateY(-2px);
+}
+
+.btn-success:hover {
+  background-color: #218838;
+}
+
+.btn-danger:hover {
+  background-color: #c82333;
+}
+
+/* Quantity Input */
+input[type="number"] {
+  text-align: center;
+  font-weight: bold;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .card-img-top {
+    height: 150px;
+  }
+
+  .btn {
+    font-size: 0.8rem;
+    padding: 5px 10px;
+  }
+
+  input[type="number"] {
+    width: 35px;
+  }
+}

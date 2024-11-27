@@ -6,5 +6,21 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'my-angular-app';
+  message: string = 'Initial message';
+
+  onClick() {
+    this.message = 'Button was clicked!';
+  }
+  // userInput: string = '';
+  message2: string = 'Hover over the box';
+
+  formData: string = '';
+
+  onSubmit(event: Event) {
+    event.preventDefault();
+    this.formData = 'Form submitted!';
+  }
+
+  userInput: string = '';
+ 
 }

@@ -1,0 +1,39 @@
+<div class="container">
+  <h2 class="text-center">Checkout</h2>
+
+  <div *ngFor="let item of cartItems" class="card mb-2">
+    <div class="card-body">
+      <h5 class="card-title">{{ item.name }}</h5>
+      <p>Price: {{ item.price | currency: 'INR' }} x {{ item.quantity }}</p>
+      <p>Total: {{ item.price * item.quantity | currency: 'INR' }}</p>
+    </div>
+  </div>
+
+  <h3>Total: {{ total | currency: 'INR' }}</h3>
+
+  <button 
+    class="btn btn-success btn-block" 
+    [disabled]="cartItems.length === 0" 
+    (click)="openPaymentOptions()">
+    Place Order
+  </button>
+
+  <!-- Payment Options Modal -->
+  <div *ngIf="showPaymentOptions" class="modal">
+    <div class="modal-content">
+      <h4>Select Payment Method</h4>
+      <div class="payment-options">
+        <button class="btn btn-primary btn-block" (click)="simulatePayment('Debit/Credit Card')">
+          Debit/Credit Card
+        </button>
+        <button class="btn btn-info btn-block" (click)="simulatePayment('UPI')">
+          UPI
+        </button>
+        <button class="btn btn-warning btn-block" (click)="simulatePayment('Cash on Delivery')">
+          Cash on Delivery
+        </button>
+      </div>
+      <button class="btn btn-danger btn-block" (click)="closePaymentOptions()">Cancel</button>
+    </div>
+  </div>
+</div>

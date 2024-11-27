@@ -1,0 +1,100 @@
+/* Import FontAwesome only once globally to reduce redundant imports */
+@import "~@fortawesome/fontawesome-free/css/all.css";
+
+/* General container styling */
+.cart-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+  background: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.cart-container h2 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+  font-size: 1.8rem;
+}
+
+/* Cart item styling */
+.product-details {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  padding: 10px;
+  background: #fff;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.cart-item img {
+  border-radius: 4px;
+  width: 50px;
+}
+
+.cart-item div {
+  flex: 1;
+  margin: 0 10px;
+  font-size: 1rem;
+  color: #555;
+}
+
+/* Buttons inside cart items */
+.cart-item .btn {
+  padding: 5px 10px;
+  font-size: 0.9rem;
+}
+
+/* Total amount styling */
+.cart-container h3 {
+  text-align: right;
+  font-size: 1.5rem;
+  color: #333;
+  margin: 20px 0;
+}
+
+/* Common button styles */
+.cart-container button {
+  width: calc(50% - 10px);
+  padding: 10px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 10px 5px;
+  color: #fff;
+}
+
+.cart-container .btn-warning {
+  background: #ffc107;
+}
+
+.cart-container .btn-warning:hover {
+  background: #e0a800;
+}
+
+.cart-container .btn-success {
+  background: #28a745;
+}
+
+.cart-container .btn-success:hover {
+  background: #218838;
+}
+
+.cart-container .btn-danger {
+  background: #dc3545;
+  width: 100px;
+}
+
+.cart-container .btn-danger:hover {
+  background: #c82333;
+}
+
+/* Disabled buttons */
+button:disabled {
+  background: #e0e0e0;
+  color: #999;
+  cursor: not-allowed;
+}

@@ -1,0 +1,134 @@
+/* Display Product Table Styling */
+.container {
+    margin: 0 auto;
+    padding: 20px;
+    max-width: 1100px;
+  }
+  
+  h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  button {
+    font-size: 16px;
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Product Table Styling */
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .table th, .table td {
+    padding: 12px;
+    text-align: center;
+    border: 1px solid #ccc;
+  }
+  
+  .table th {
+    background-color: #f8f9fa;
+    font-weight: bold;
+  }
+  
+  .table tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  
+  .table tbody tr:hover {
+    background-color: #e6e6e6;
+  }
+  
+  button.btn {
+    font-size: 14px;
+    padding: 6px 10px;
+    border-radius: 4px;
+  }
+  
+  .btn-warning {
+    background-color: #f39c12;
+  }
+  
+  .btn-warning:hover {
+    background-color: #e67e22;
+  }
+  
+  .btn-danger {
+    background-color: #e74c3c;
+  }
+  
+  .btn-danger:hover {
+    background-color: #c0392b;
+  }
+  
+  @media (max-width: 768px) {
+    .table th, .table td {
+      font-size: 12px;
+      padding: 8px;
+    }
+  
+    /* Stacking the table columns on smaller screens */
+    .table {
+      display: block;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+  
+    .container {
+      padding: 10px;
+    }
+  
+    button {
+      font-size: 14px;
+      padding: 8px 12px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .container {
+      padding: 10px;
+    }
+  
+    h2 {
+      font-size: 18px;
+    }
+  
+    .table th, .table td {
+      font-size: 10px;
+      padding: 6px;
+    }
+  
+    button {
+      font-size: 12px;
+      padding: 6px 10px;
+    }
+  
+    /* Stack table rows vertically on very small screens */
+    .table td {
+      display: block;
+      width: 100%;
+      text-align: left;
+    }
+  
+    .table th {
+      display: none; /* Hide the header on small screens */
+    }
+  
+    .table td:before {
+      content: attr(data-label);
+      font-weight: bold;
+      display: inline-block;
+      width: 50%;
+    }
+  }
+  

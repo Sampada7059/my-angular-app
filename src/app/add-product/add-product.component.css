@@ -1,0 +1,31 @@
+body {
+  background-color: #f8f9fa;
+  font-family: Arial, sans-serif;
+}
+
+.card {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.card-header {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+label {
+  font-weight: 500;
+}
+
+button {
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:disabled {
+  background-color: #6c757d;
+}
+
+button:not(:disabled):hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}

@@ -1,0 +1,15 @@
+<nav class="navbar">
+    <a routerLink="/" routerLinkActive="active-link">Home</a>
+    <a routerLink="/products" routerLinkActive="active-link">Add Products</a>
+    <a routerLink="/productCards" routerLinkActive="active-link">Products</a>
+
+    <a routerLink="/cart" routerLinkActive="active-link">
+      <span class="cart-icon-container">
+        <i class="fa fa-shopping-cart"></i> <!-- Replace with your preferred icon -->
+        <span class="cart-count" *ngIf="cartCount > 0">{{ cartCount }}</span>
+      </span>
+    </a>
+</nav>
+  
+<router-outlet></router-outlet>
+

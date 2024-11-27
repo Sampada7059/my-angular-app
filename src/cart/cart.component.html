@@ -1,0 +1,58 @@
+<div class="cart-container">
+  <h2>Your Cart</h2>
+
+  <!-- Empty Cart Message -->
+  <div *ngIf="isCartEmpty" class="text-center">
+    <p>Your cart is empty.</p>
+  </div>
+
+  <!-- Cart Items -->
+  <div *ngFor="let item of cartItems" class="cart-item">
+      <!-- Product Image -->
+
+      <div class="product-details">
+        <img [src]="item.image" alt="{{ item.name }}" class="item-image" />
+
+        <!-- Product Details -->
+        <div class="item-details">
+          <h6>{{ item.name }}</h6>
+          <p>Price: {{ item.price | currency:'INR' }}</p>
+        </div>
+
+        <!-- Quantity Input -->
+        <div class="item-quantity">
+          <label for="quantity-{{ item.id }}">Quantity:{{item.quantity}}</label>
+        </div>
+
+        <!-- Remove Button -->
+        <div>
+          <button class="btn btn-danger btn-sm" (click)="removeItem(item.id)">
+            Remove
+          </button>
+        </div>
+        </div>
+  </div>
+
+  <!-- Total Price -->
+  <div class="total-container">
+    <h3>Total: {{ total | currency:'INR' }}</h3>
+  </div>
+
+  <!-- Cart Action Buttons -->
+  <div class="cart-actions">
+    <button
+      class="btn btn-warning"
+      [disabled]="isCartEmpty"
+      (click)="clearCart()"
+    >
+      Clear Cart
+    </button>
+    <button
+      class="btn btn-success"
+      [disabled]="isCartEmpty"
+      [routerLink]="['/checkout']"
+    >
+      Proceed to Checkout
+    </button>
+  </div>
+</div>

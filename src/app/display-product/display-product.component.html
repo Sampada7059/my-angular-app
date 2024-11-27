@@ -1,0 +1,59 @@
+<div class="container mt-4">
+    <h2>Product List</h2>
+    
+    <!-- Add Product Button -->
+    <div class="mb-3">
+      <button
+        class="btn btn-primary"
+        routerLink="/add-product"
+      >
+        Add New Product
+      </button>
+    </div>
+  
+    <div>
+    <!-- Products Table -->
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Price</th>
+          <th>Quantity</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <tr *ngFor="let product of products">
+          <td>{{ product.product_Name }}</td>
+          <td>{{ product.product_Type }}</td>
+          <td>{{ product.description }}</td>
+          <td>{{ product.price | currency:'INR' }}</td>
+          <td>{{ product.quantity }}</td>
+          <td>
+            <div class="d-flex gap-2">
+
+            <!-- Edit Product Button -->
+            <button
+              class="btn btn-warning btn-sm"
+              [routerLink]="['/edit-product', product.product_Id]"
+            >
+              Edit
+            </button>
+  
+            <!-- Delete Product Button -->
+            <button
+              class="btn btn-danger btn-sm"
+              (click)="deleteProduct(product.product_Id)"
+            >
+              Delete
+            </button>
+          </div>
+        </tr>
+      </tbody>
+    </table>
+</div>
+  </div>
+  
