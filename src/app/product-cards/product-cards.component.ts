@@ -7,16 +7,17 @@ import { ProductService, Product } from 'src/product.service';
   templateUrl: './product-cards.component.html',
   styleUrls: ['./product-cards.component.css']
 })
-export class ProductCardsComponent implements OnInit{
-
-  products: Product[] = [];
+export class ProductCardsComponent implements OnInit {
+  
+  products: Product[] = []; // All products from the API
+  searchTerm: string = ''; // Bind this to the search input field
 
   constructor(private productService: ProductService, private cartService: CartService) {}
 
   ngOnInit(): void {
     this.loadProducts(); // Load products on component initialization
   }
- 
+
   loadProducts(): void {
     this.productService.getProducts().subscribe({
       next: (data) => {
@@ -33,7 +34,18 @@ export class ProductCardsComponent implements OnInit{
       }
     });
   }
-  
+
+  // Method to filter products based on the search term
+  filteredProducts(): Product[] {
+    if (!this.searchTerm.trim()) {
+      return this.products; // Return all products if the search term is empty
+    }
+    const lowerCaseSearch = this.searchTerm.toLowerCase();
+    return this.products.filter(product =>
+      product.product_Name.toLowerCase().includes(lowerCaseSearch)
+    );
+  }
+
   // Method to decrease the quantity
   decreaseQuantity(product: Product): void {
     if (product.quantity > 1) {
@@ -41,17 +53,15 @@ export class ProductCardsComponent implements OnInit{
     }
   }
 
+  // Method to increase the quantity
   increaseQuantity(product: Product): void {
     if (product.quantity < 5) {
       product.quantity++;
     }
   }
 
- 
-
   // Add a product to the cart
-  addToCart(product: any) {
-    debugger
+  addToCart(product: Product): void {
     if (product.quantity && product.quantity > 0) {
       this.cartService.addToCart(product, product.quantity); // Pass selected quantity
       alert(`Added ${product.quantity} of "${product.product_Name}" to your cart!`);
@@ -59,11 +69,4 @@ export class ProductCardsComponent implements OnInit{
       alert('Please select a valid quantity before adding to the cart.');
     }
   }
-  
-
-  // notifyMe(product: Product): void {
-  //   // Handle notification logic (e.g., send an API request)
-  //   console.log('User wants to be notified for:', product);
-  //   alert(`We will notify you when "${product.product_Name}" is available!`);
-  // }
 }

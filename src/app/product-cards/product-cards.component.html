@@ -8,9 +8,25 @@
 </head>
 <body>
   <div class="container mt-4">
+    <!-- Search Bar -->
+    <div class="row mb-4">
+      <div class="col-12">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Search for products..."
+          [(ngModel)]="searchTerm"
+        />
+      </div>
+    </div>
+
+    <!-- Product Cards -->
     <div class="row">
-      <!-- Loop through products and display each as a card -->
-      <div class="col-md-4 mb-4" *ngFor="let product of products">
+      <!-- Filtered Product Loop -->
+      <div
+        class="col-md-4 mb-4"
+        *ngFor="let product of filteredProducts()"
+      >
         <div class="card h-100 shadow-sm">
           <!-- Product Image -->
           <img
@@ -64,7 +80,7 @@
             <button class="btn btn-success w-45" (click)="addToCart(product)">
               Add to Cart
             </button>
-            <!-- Notify Me Button -->
+            <!-- Show Details Button -->
             <button class="btn btn-danger w-45">
               Show Details
             </button>
