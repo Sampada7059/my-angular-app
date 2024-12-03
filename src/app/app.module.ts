@@ -8,12 +8,12 @@ import { CheckoutComponent } from '../checkout/checkout.component';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; // Required for Toastr
 import { FormsModule } from '@angular/forms';
-import { CartService } from '../cart.service';
+import { CartService } from './services/cart.service';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DisplayProductComponent } from './display-product/display-product.component';
 import { AddProductComponent } from './add-product/add-product.component';
-import { ProductService } from 'src/product.service';
+import { ProductService } from 'src/app/services/product.service';
 import { ProductCardsComponent } from './product-cards/product-cards.component';
 
 
