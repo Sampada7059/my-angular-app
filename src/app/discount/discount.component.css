@@ -1,36 +1,46 @@
-  .container {
-    max-width: 900px;
-    margin: auto;
-    padding: 20px;
-  }
+.container {
+  max-width: 900px;
+  margin: auto;
+  padding: 20px;
+}
 
-  ng-select {
-    width: 100%;
-  }
+.form-group {
+  margin-bottom: 1rem;
+}
 
-  .form-group {
-    margin-bottom: 1rem;
-  }
+.form-control {
+  max-width: 250px;
+}
 
-  .form-row {
-    display: flex;
-    gap: 20px;
-  }
+table {
+  width: 100%;
+  margin-top: 20px;
+}
 
-  label {
-    margin-bottom: 5px;
-  }
+button {
+  margin-right: 5px;
+}
 
-  table {
-    width: 100%;
-    margin-top: 20px;
-  }
+.d-flex {
+  display: flex;
+}
 
-  .thead-dark th {
-    background-color: #343a40;
-    color: white;
-  }
+.justify-content-between {
+  justify-content: space-between;
+}
 
-  button {
-    margin-right: 5px;
-  }
+.align-items-center {
+  align-items: center;
+}
+
+.me-2 {
+  margin-right: 8px;
+}
+
+.form-control {
+  max-width: 200px;
+}
+
+.dropdown-menu{
+  cursor: pointer;
+}

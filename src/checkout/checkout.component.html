@@ -1,40 +1,56 @@
+<div class="checkout-container">
+  <h2>Checkout</h2>
 
-<div *ngIf="isLoggedIn" class="container">
-  <h2 class="text-center">Checkout</h2>
-
-  <div *ngFor="let item of cartItems" class="card mb-2">
-    <div class="card-body">
-      <h5 class="card-title">{{ item.name }}</h5>
-      <p>Price: {{ item.price | currency: 'INR' }} x {{ item.quantity }}</p>
-      <p>Total: {{ item.price * item.quantity | currency: 'INR' }}</p>
-    </div>
-  </div>
-
-  <h3>Total: {{ total | currency: 'INR' }}</h3>
-
-  <button 
-    class="btn btn-success btn-block" 
-    [disabled]="cartItems.length === 0" 
-    (click)="openPaymentOptions()">
-    Place Order
-  </button>
-
-  <!-- Payment Options Modal -->
-  <div *ngIf="showPaymentOptions" class="modal">
-    <div class="modal-content">
-      <h4>Select Payment Method</h4>
-      <div class="payment-options">
-        <button class="btn btn-primary btn-block" (click)="simulatePayment('Debit/Credit Card')">
-          Debit/Credit Card
-        </button>
-        <button class="btn btn-info btn-block" (click)="simulatePayment('UPI')">
-          UPI
-        </button>
-        <button class="btn btn-warning btn-block" (click)="simulatePayment('Cash on Delivery')">
-          Cash on Delivery
-        </button>
+  <!-- Shipping Details -->
+  <div class="shipping-details">
+    <h3>Shipping Address</h3>
+    <form #checkoutForm="ngForm">
+      <div class="form-group">
+        <label for="fullName">Full Name</label>
+        <input type="text" id="fullName" [(ngModel)]="order.fullName" name="fullName" required />
       </div>
-      <button class="btn btn-danger btn-block" (click)="closePaymentOptions()">Cancel</button>
-    </div>
+      <div class="form-group">
+        <label for="address">Address</label>
+        <textarea id="address" [(ngModel)]="order.address" name="address" required></textarea>
+      </div>
+      <div class="form-group">
+        <label for="city">City</label>
+        <input type="text" id="city" [(ngModel)]="order.city" name="city" required />
+      </div>
+      <div class="form-group">
+        <label for="zipCode">Zip Code</label>
+        <input type="text" id="zipCode" [(ngModel)]="order.zipCode" name="zipCode" required />
+      </div>
+    </form>
   </div>
+
+  <!-- Order Summary -->
+  <div class="order-summary">
+    <h3>Order Summary</h3>
+    <div *ngFor="let item of cartItems" class="order-item">
+      <p>{{ item.productName }} (x{{ item.quantity }}) - ₹{{ item.unitPrice * item.quantity }}</p>
+    </div>
+    <hr />
+    <p><strong>Total: ₹{{ totalAmount }}</strong></p>
+  </div>
+
+  <!-- Payment Options -->
+  <div class="payment-options">
+    <h3>Payment Method</h3>
+    <label>
+      <input type="radio" name="paymentMethod" value="Credit Card" [(ngModel)]="order.paymentMethod" required />
+      Credit Card
+    </label>
+    <label>
+      <input type="radio" name="paymentMethod" value="UPI" [(ngModel)]="order.paymentMethod" required />
+      UPI
+    </label>
+    <label>
+      <input type="radio" name="paymentMethod" value="Cash on Delivery" [(ngModel)]="order.paymentMethod" required />
+      Cash on Delivery
+    </label>
+  </div>
+
+  <!-- Place Order Button -->
+  <!-- <button (click)="placeOrder()" [disabled]="!checkoutForm.valid" class="place-order-btn">Place Order</button> -->
 </div>

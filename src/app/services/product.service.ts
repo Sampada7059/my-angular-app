@@ -12,11 +12,6 @@ export interface Product {
     quantity: number;
     available: boolean;
     imagePath: string;
-    
-    cartAdditions?: number;
-    viewsCount?: number;
-    isAddtoCart? : boolean;
-    isShowDetails? : boolean;
     discounted_Price?: number | null; 
 
 }

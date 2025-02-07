@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProductService, Product } from 'src/app/services/product.service';
+interface ProductResponse {
+  products: Product[]; // The API response has a 'products' array
+}
 
 @Component({
   selector: 'app-display-product',
@@ -26,11 +29,28 @@ export class DisplayProductComponent implements OnInit {
     this.loadProducts();
   }
 
+  // loadProducts(): void {
+  //   this.productService.getProducts().subscribe((data) => {
+  //     if (data && Array.isArray(data.products)) {
+  //       this.products = data.products;
+  //     } else {
+  //       console.error('No valid products array found in response:', data);
+  //     }
+  //   });
+  // }
+
   loadProducts(): void {
-    this.productService.getProducts().subscribe((data) => {
-      this.products = data;
-    });
+    this.productService.getProducts().subscribe(
+      (data) => {
+        console.log('Fetched Products:', data);  // Check if you get the array directly here
+        this.products = data;  // Assign the directly fetched products array
+      },
+      (error) => {
+        console.error('Error fetching products:', error);
+      }
+    );
   }
+  
 
   deleteProduct(productId: number): void {
     if (confirm('Are you sure you want to delete this product?')) {

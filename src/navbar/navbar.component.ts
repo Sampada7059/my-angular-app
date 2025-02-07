@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+// In navbar.component.ts
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CartService } from 'src/app/services/cart.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { Router } from '@angular/router';
@@ -9,46 +10,53 @@ import { Subscription } from 'rxjs';
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent implements OnInit, OnDestroy {
   cartCount: number = 0;
-  isLoggedIn: boolean = false; // This tracks the login status
-  isAdmin: boolean = false; // This tracks if the user is an admin
-  private userRoleSubscription!: Subscription; // Definite assignment
+  isLoggedIn: boolean = false;
+  isAdmin: boolean = false;
+  private userRoleSubscription!: Subscription;
 
   constructor(
-    private cartService: CartService, 
-    private authService: AuthService, 
+    private cartService: CartService,
+    private authService: AuthService,
     private router: Router
   ) {}
 
   ngOnInit(): void {
-    // Subscribe to cart changes
-    this.cartService.getCartItems().subscribe(items => {
-      this.cartCount = items.reduce((total, item) => total + item.quantity, 0); // Total quantity of items
+    // this.cartService.cartCount$.subscribe(cartCount => {
+    //   this.cartCount = cartCount;
+    // });
+
+    this.cartService.cartCount$.subscribe((count) => {
+      this.cartCount = count;
     });
 
-    // Subscribe to the 'isLoggedIn$' observable to track login status
     this.authService.isLoggedIn$.subscribe((status) => {
-      this.isLoggedIn = status; // Update the login status when it changes
-  
+      this.isLoggedIn = status;
       if (this.isLoggedIn) {
-        // Subscribe to the 'userRole$' observable to track user role
         this.userRoleSubscription = this.authService.userRole$.subscribe((role) => {
-          this.isAdmin = role === 'Admin'; // Set isAdmin based on role
+          this.isAdmin = role === 'Admin';
         });
       } else {
-        this.isAdmin = false; // Reset isAdmin when not logged in
+        this.isAdmin = false;
       }
     });
   }
 
   onLogout(): void {
-    this.authService.logout(); // Trigger logout in AuthService
-    this.router.navigate(['/login']); // Navigate to login page
-    this.isLoggedIn = false; // Update login status
-    this.isAdmin = false; // Reset admin status
+    this.authService.logout();
+    this.router.navigate(['/login']);
+    this.isLoggedIn = false;
+    this.isAdmin = false;
+    this.userRoleSubscription?.unsubscribe();
+  }
+
+  ngOnDestroy(): void {
     if (this.userRoleSubscription) {
-      this.userRoleSubscription.unsubscribe(); // Unsubscribe from the role subscription
+      this.userRoleSubscription.unsubscribe();
     }
   }
+  // onCartIconClick() {
+  //   this.cartService.loadCart();  // Load cart details
+  // }
 }

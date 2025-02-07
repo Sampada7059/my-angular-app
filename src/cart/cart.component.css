@@ -1,100 +1,60 @@
-/* Import FontAwesome only once globally to reduce redundant imports */
-@import "~@fortawesome/fontawesome-free/css/all.css";
-
-/* General container styling */
-.cart-container {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 20px;
-  background: #f9f9f9;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.cart-container h2 {
+/* Center the "Empty Cart" state */
+.empty-cart {
+  padding: 50px 20px;
   text-align: center;
-  color: #333;
+}
+
+.empty-cart img {
+  max-width: 200px;
   margin-bottom: 20px;
-  font-size: 1.8rem;
 }
 
-/* Cart item styling */
-.product-details {
-  display: flex;
-  align-items: center;
-  margin-bottom: 15px;
-  padding: 10px;
-  background: #fff;
-  border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+/* Styling for Cart Items */
+.cart-item {
+  background-color: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  overflow: hidden;
 }
 
-.cart-item img {
-  border-radius: 4px;
-  width: 50px;
+.cart-item .card-body {
+  padding: 15px;
 }
 
-.cart-item div {
-  flex: 1;
-  margin: 0 10px;
-  font-size: 1rem;
-  color: #555;
+.cart-item .card-title {
+  font-size: 18px;
+  font-weight: bold;
 }
 
-/* Buttons inside cart items */
-.cart-item .btn {
-  padding: 5px 10px;
-  font-size: 0.9rem;
+.cart-item .card-text {
+  font-size: 14px;
+  color: #6c757d;
 }
 
-/* Total amount styling */
-.cart-container h3 {
-  text-align: right;
-  font-size: 1.5rem;
-  color: #333;
-  margin: 20px 0;
+.cart-item .badge {
+  font-size: 16px;
+  font-weight: bold;
 }
 
-/* Common button styles */
-.cart-container button {
-  width: calc(50% - 10px);
-  padding: 10px;
-  font-size: 1rem;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin: 10px 5px;
-  color: #fff;
+/* Styling for the Total Section */
+.d-flex.justify-content-between {
+  font-size: 18px;
+  margin-top: 20px;
 }
 
-.cart-container .btn-warning {
-  background: #ffc107;
+/* Buttons styling */
+.btn-sm {
+  font-size: 12px;
 }
 
-.cart-container .btn-warning:hover {
-  background: #e0a800;
+.btn-warning {
+  font-size: 14px;
 }
 
-.cart-container .btn-success {
-  background: #28a745;
+.btn-success {
+  font-size: 14px;
 }
 
-.cart-container .btn-success:hover {
-  background: #218838;
-}
-
-.cart-container .btn-danger {
-  background: #dc3545;
-  width: 100px;
-}
-
-.cart-container .btn-danger:hover {
-  background: #c82333;
-}
-
-/* Disabled buttons */
-button:disabled {
-  background: #e0e0e0;
-  color: #999;
-  cursor: not-allowed;
+.btn-danger {
+  font-size: 14px;
 }

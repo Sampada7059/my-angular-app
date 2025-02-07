@@ -25,11 +25,11 @@
         <tr *ngFor="let product of products">
           <ng-container *ngIf="editingProduct?.product_Id === product.product_Id; else viewMode">
             <!-- Edit Mode -->
-            <td><input *ngIf="editingProduct" [(ngModel)]="editingProduct.product_Name" class="form-control" /></td>
-            <td><input *ngIf="editingProduct" [(ngModel)]="editingProduct.product_Type" class="form-control" /></td>
-            <td><input *ngIf="editingProduct" [(ngModel)]="editingProduct.description" class="form-control" /></td>
-            <td><input *ngIf="editingProduct" [(ngModel)]="editingProduct.price" type="number" class="form-control" /></td>
-            <td><input *ngIf="editingProduct" [(ngModel)]="editingProduct.quantity" type="number" class="form-control" /></td>
+            <td><input [(ngModel)]="editingProduct.product_Name" class="form-control" /></td>
+            <td><input [(ngModel)]="editingProduct.product_Type" class="form-control" /></td>
+            <td><input [(ngModel)]="editingProduct.description" class="form-control" /></td>
+            <td><input [(ngModel)]="editingProduct.price" type="number" class="form-control" /></td>
+            <td><input [(ngModel)]="editingProduct.quantity" type="number" class="form-control" /></td>
             <td>
               <div class="row">
                 <div class="col-auto">

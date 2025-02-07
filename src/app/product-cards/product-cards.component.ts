@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { tap } from 'rxjs';
 import { CartService } from 'src/app/services/cart.service';
 import { ProductService, Product } from 'src/app/services/product.service';
+import { environment } from 'src/environments/environment';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-product-cards',
@@ -11,10 +14,13 @@ export class ProductCardsComponent implements OnInit {
   products: Product[] = [];
   searchTerm: string = '';
   hoveredProduct: Product | null = null; // Track the hovered product
+  cartCount: number = 0;
+  quantity: number = 1;
 
   constructor(
     private productService: ProductService,
-    private cartService: CartService
+    private cartService: CartService,
+    private http: HttpClient // Add this
   ) {}
 
   ngOnInit(): void {
@@ -23,11 +29,24 @@ export class ProductCardsComponent implements OnInit {
 
   loadProducts(): void {
     this.productService.getProducts().subscribe({
-      next: (data) => {
-        this.products = data;
-        this.products.forEach(product => {
-          product.quantity = 1; // Initialize quantity
-        });
+      next: (data: any) => {
+        console.log("Fetched Products:", data); // Debugging the API response
+  
+        // Check if the response contains a $values array or is already an array
+        if (data && data.$values && Array.isArray(data.$values)) {
+          this.products = data.$values.map((product: any) => ({
+            ...product,
+            quantity: 1 // Initialize quantity
+          }));
+        } else if (Array.isArray(data)) {
+          this.products = data.map((product: any) => ({
+            ...product,
+            quantity: 1
+          }));
+        } else {
+          console.error('Unexpected response format:', data);
+          this.products = []; // Ensure it's an array to avoid errors
+        }
       },
       error: (error) => {
         console.error('Error fetching products:', error);
@@ -58,11 +77,9 @@ export class ProductCardsComponent implements OnInit {
   }
 
   addToCart(product: Product): void {
-    if (product.quantity && product.quantity > 0) {
+    if (product.quantity > 0) {
       this.cartService.addToCart(product, product.quantity);
-      alert(`Added "${product.product_Name}" to your cart!`);
-    } else {
-      alert('Please select a valid quantity before adding to the cart.');
     }
   }
+  
 }

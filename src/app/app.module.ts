@@ -4,7 +4,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CartComponent } from '../cart/cart.component';
-import { CheckoutComponent } from '../checkout/checkout.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; // Required for Toastr
 import { FormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
@@ -24,12 +23,14 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { ForgotResetPasswordService } from './services/forgot-reset-password.service';
 import { ToastrModule } from 'ngx-toastr';
+import { OrderSuccessComponent } from './order-success/order-success.component';
+import { CheckoutComponent } from '../checkout/checkout.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({ //decorator that contains declarations
   declarations: [
     AppComponent,
     CartComponent,
-    CheckoutComponent,
     AddProductComponent,
     DisplayProductComponent,
     ProductCardsComponent,
@@ -39,7 +40,10 @@ import { ToastrModule } from 'ngx-toastr';
     DiscountComponent,
     AddDiscountComponent,
    ForgotPasswordComponent,
-   ResetPasswordComponent
+   ResetPasswordComponent,
+   OrderSuccessComponent,
+   CheckoutComponent
+   
     
   ],
   imports: [ //allows module to access the functionality provided by other modules
@@ -51,6 +55,7 @@ import { ToastrModule } from 'ngx-toastr';
     ReactiveFormsModule,
     CommonModule,
     NgSelectModule,
+    RouterModule,
     ToastrModule.forRoot({
       positionClass: 'toast-top-right',
       closeButton : true,
@@ -65,6 +70,8 @@ import { ToastrModule } from 'ngx-toastr';
       multi: true
     }
   ],
+  
   bootstrap: [AppComponent] //It specifies a root component to load
 })
 export class AppModule { }
+

@@ -10,8 +10,11 @@ import { formatDate } from '@angular/common';
 })
 export class DiscountComponent implements OnInit {
   discounts: Discount[] = [];
+  filteredDiscounts: Discount[] = [];
   editingId: number | null = null;
   editingDiscount: Discount = this.initializeEmptyDiscount();
+  filterStatus: string = 'all'; // Default filter status
+  selectedStatus: string = 'Discounts Status'; // Default dropdown button label
 
   constructor(private discountService: DiscountService, private router: Router) {}
 
@@ -23,40 +26,59 @@ export class DiscountComponent implements OnInit {
   loadDiscounts(): void {
     this.discountService.getDiscounts().subscribe((data) => {
       this.discounts = data;
+      this.applyFilter(); // Apply initial filter based on selectedStatus
     });
+  }
+
+  /** Update the filter and selectedStatus when a dropdown option is clicked */
+  updateFilter(status: string): void {
+    this.selectedStatus = status; // Update the label of the dropdown button
+    this.filterStatus = status.toLowerCase(); // Update the filter status
+    this.applyFilter(); // Apply the new filter
+  }
+
+  /** Apply filter based on the selected status */
+  applyFilter(): void {
+    const currentDate = new Date();
+
+    if (this.filterStatus === 'all') {
+      // If "All" is selected, show all discounts
+      this.filteredDiscounts = [...this.discounts];
+    } else {
+      this.filteredDiscounts = this.discounts.filter((discount) => {
+        const startDate = new Date(discount.startDate);
+        const endDate = new Date(discount.endDate);
+
+        if (this.filterStatus === 'active') {
+          return currentDate >= startDate && currentDate <= endDate;
+        } else if (this.filterStatus === 'expired') {
+          return currentDate > endDate;
+        } else if (this.filterStatus === 'upcoming') {
+          return currentDate < startDate;
+        }
+        return true; // Default case
+      });
+    }
   }
 
   /** Start editing a discount */
   startEditing(discount: Discount): void {
     this.editingId = discount.occasionId;
-    this.editingDiscount = { ...discount }; // Clone the object to prevent mutating original
+    this.editingDiscount = { ...discount };
   }
 
   /** Save the discount being edited */
   saveDiscount(): void {
-    if (!this.validateDiscount(this.editingDiscount)) {
-      alert('All fields are required.');
-      return;
-    }
-  
-    // Ensure Occasion_Name and Product_Types are not empty
-    if (!this.editingDiscount.occasionName.trim() || !this.editingDiscount.productType.trim()) {
-      alert('Occasion Name and Product Types are required.');
-      return;
-    }
-  
-    // Prepare the payload
+    // Ensure we are only sending modified fields
     const payload: Discount = {
       occasionId: this.editingId!,
-      occasionName: this.editingDiscount.occasionName,
+      occasionName: this.editingDiscount.occasionName.trim() || this.editingDiscount.occasionName, // Keep original value if not modified
       discountPercentage: this.editingDiscount.discountPercentage,
-      startDate: formatDate(this.editingDiscount.startDate, 'yyyy-MM-dd', 'en'),
-      endDate: formatDate(this.editingDiscount.endDate, 'yyyy-MM-dd', 'en'),
-      productType: this.editingDiscount.productType,
+      startDate: this.formatDateForApi(this.editingDiscount.startDate), // Format date properly
+      endDate: this.formatDateForApi(this.editingDiscount.endDate), // Format date properly
+      productType: this.editingDiscount.productType.trim() || this.editingDiscount.productType, // Keep original value if not modified
     };
-  
-  
-    // Make the API call
+
     if (this.editingId) {
       this.discountService.updateDiscount(this.editingId, payload).subscribe({
         next: () => {
@@ -68,8 +90,11 @@ export class DiscountComponent implements OnInit {
       });
     }
   }
-  
-  
+
+  formatDateForApi(date: string): string {
+    const formattedDate = new Date(date);
+    return formattedDate.toISOString();  // Format to ISO 8601 format for API
+  }
 
   /** Delete a discount by ID */
   deleteDiscount(occasionId: number): void {
@@ -81,24 +106,21 @@ export class DiscountComponent implements OnInit {
         },
         error: (err) => {
           console.error('Error deleting discount:', err);
-          alert('Failed to delete discount. Check console logs for details.');
+          alert('Failed to delete discount.');
         },
       });
     }
   }
 
-  /** Navigate to the Add Discount page */
   navigateToAddDiscount(): void {
     this.router.navigate(['/add-discount']);
   }
 
-  /** Reset editing state */
   resetEditing(): void {
     this.editingId = null;
     this.editingDiscount = this.initializeEmptyDiscount();
   }
 
-  /** Initialize an empty discount object */
   initializeEmptyDiscount(): Discount {
     return {
       occasionId: 0,
@@ -110,7 +132,6 @@ export class DiscountComponent implements OnInit {
     };
   }
 
-  /** Validate discount input */
   validateDiscount(discount: Discount): boolean {
     return (
       discount.occasionName.trim() !== '' &&
@@ -121,20 +142,8 @@ export class DiscountComponent implements OnInit {
     );
   }
 
-  /** Handle errors and display validation messages */
   private handleError(err: any): void {
     console.error('Error:', err);
-
-    if (err.error && err.error.errors) {
-      const validationErrors = err.error.errors as Record<string, string[]>;
-
-      alert(
-        `Validation Errors:\n${Object.entries(validationErrors)
-          .map(([field, messages]) => `${field}: ${messages.join(', ')}`)
-          .join('\n')}`
-      );
-    } else {
-      alert('An error occurred. Check console logs for details.');
-    }
+    alert('An error occurred. Check console logs for details.');
   }
 }

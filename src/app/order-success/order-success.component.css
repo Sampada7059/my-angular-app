@@ -1,0 +1,13 @@
+.order-success {
+    text-align: center;
+    margin-top: 50px;
+  }
+  
+  .order-success h2 {
+    color: #28a745;
+  }
+  
+  .order-success .btn {
+    margin-top: 20px;
+  }
+  

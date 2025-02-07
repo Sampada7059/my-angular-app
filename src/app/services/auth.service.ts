@@ -1,13 +1,11 @@
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, map, Observable } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
-import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
-
-@Injectable({ //decorator to show that the class can be injected
-  providedIn: 'root', //this metadata specifies that this service visible throughout the application
+@Injectable({
+  providedIn: 'root',
 })
 export class AuthService {
   private apiUrl = 'https://localhost:7142/api/User'; // API URL to communicate with the end point
@@ -27,58 +25,79 @@ export class AuthService {
     }
   }
 
-  
-  //Returns the current user role.
-  getUserRole(): string | null {
-    return this.userRoleSubject.value;
-  }
+  // Returns the current user role.
+  // getUserRole(): string | null {
+  //   return this.userRoleSubject.value;
+  // }
 
+  getUserRole(): string | null {
+    const role = this.userRoleSubject.value;
+    if (!role) {
+      const storedUser = localStorage.getItem('authToken');
+      if (storedUser) {
+        try {
+          const decodedToken: any = jwtDecode(storedUser);
+          return decodedToken['role'] || null;
+        } catch (error) {
+          console.error('Error decoding token:', error);
+        }
+      }
+    }
+    return role;
+  }
   
-  //Login method to authenticate user and get a token.
+
+  // Login method to authenticate user and get a token.
   login(username: string, password: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/login`, { username, password });
   }
 
-  //Signup method for creating a new user.
-  signup(
-    username: string,
-    email: string,
-    password: string,
-    confirmPassword: string
-  ): Observable<any> {
+  // Signup method for creating a new user.
+  signup(username: string, email: string, password: string, confirmPassword: string): Observable<any> {
     const payload = { username, email, password, confirmPassword };
     return this.http.post(`${this.apiUrl}/signup`, payload);
   }
 
-
-//Logs out the user, clears the token and login state.
+  // Logs out the user, clears the token and login state.
   logout(): void {
     localStorage.removeItem('authToken'); // Clear token
+    localStorage.removeItem('userId'); // Clear user ID
     this.isLoggedInSubject.next(false); // Emit logged-out status
     this.userRoleSubject.next(null); // Clear user role
   }
 
-  
-  //Handles the login process by saving the token and updating state.
+  // Handles the login process by saving the token and updating state.
   handleLogin(token: string): void {
     localStorage.setItem('authToken', token); // Save token in localStorage
-    this.setLoginState(token);
-     // Update login state and user role
-    const role = this.getUserRole(); // Fetch the role
+    const decodedToken: any = jwtDecode(token); // Decode the token
+
+    const role = decodedToken['role']; // Extract role
+    const userId = decodedToken['userId']; // Extract userId (this must be present in the token)
+
+    // Store user ID in localStorage (only if available in the decoded token)
+    if (userId) {
+      localStorage.setItem('userId', userId.toString());
+    }
+
+    this.setLoginState(token); // Update login state and user role
+    this.isLoggedInSubject.next(true); // Emit logged-in status
+    this.userRoleSubject.next(role); // Emit user role
+
+    // Redirect based on user role
     if (role === 'User') {
-      this.navigateTo('/productCards'); // Redirect to product cards for users
+      this.navigateTo('/productCards');
     } else if (role === 'Admin') {
-      this.navigateTo('/products'); // Redirect to product list for admins
+      this.navigateTo('/products');
     }
   }
 
-   //Retrieves authorization headers for authenticated requests.
+  // Retrieves authorization headers for authenticated requests.
   getAuthHeaders(): { [header: string]: string } {
     const token = localStorage.getItem('authToken');
     return token ? { Authorization: `Bearer ${token}` } : {};
   }
 
-  //Checks the login status and updates state if necessary.
+  // Checks the login status and updates state if necessary.
   checkLoginStatus(): void {
     const token = localStorage.getItem('authToken');
     if (token) {
@@ -89,12 +108,10 @@ export class AuthService {
     }
   }
 
-  
-  //Decodes a JWT and extracts the user's role.
+  // Decodes a JWT and extracts the user's role and ID.
   private setLoginState(token: string): void {
     try {
       const decodedToken: any = jwtDecode(token); // Decode the token
-
       const role = decodedToken['role']; // Extract role
 
       this.isLoggedInSubject.next(true); // Emit logged-in status
@@ -105,12 +122,27 @@ export class AuthService {
     }
   }
 
+  // Extracts the userId directly from the token
+  getUserId(): string | null {
+    const token = localStorage.getItem('authToken');
+    if (token) {
+      try {
+        const decodedToken: any = jwtDecode(token);
+        return decodedToken['sub'] || null; // Using 'sub' as the userId
+      } catch (error) {
+        console.error('Error decoding token:', error);
+      }
+    }
+    return null; // Return null if no token is found
+  }
+  
 
-  //Checks if the logged-in user has a specific role.
+  // Checks if the logged-in user has a specific role.
   hasRole(role: string): boolean {
     return this.userRoleSubject.value === role;
   }
 
+  // Checks if the logged-in user has any of the specified roles.
   hasAnyRole(roles: string[]): boolean {
     const currentRole = this.userRoleSubject.value;
     return roles.includes(currentRole || '');

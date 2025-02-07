@@ -1,46 +1,48 @@
 import { Component, OnInit } from '@angular/core';
-import { CartService} from '../app/services/cart.service';
-import { Router } from '@angular/router';
-import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-checkout',
   templateUrl: './checkout.component.html',
-  styleUrls: ['./checkout.component.css']
+  styleUrls: ['./checkout.component.css'],
 })
 export class CheckoutComponent implements OnInit {
-  cartItems: any[] = [];
-  total: number = 0;
-  showPaymentOptions: boolean = false;
-  isLoggedIn: boolean = false; 
+  order: any = {
+    fullName: '',
+    address: '',
+    city: '',
+    zipCode: '',
+    paymentMethod: '',
+  };
 
+  cartItems: any[] = []; // Array to store cart items
+  totalAmount: number = 0; // Total order amount
 
-  constructor(private cartService: CartService, private router: Router, private authService: AuthService) {}
+  constructor() {}
 
   ngOnInit(): void {
-    this.cartService.getCartItems().subscribe(items => {
-      this.cartItems = items;
-      this.total = this.cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
-    });
-
-    this.authService.isLoggedIn$.subscribe(status => {
-      this.isLoggedIn = status; // Update the login status when it changes
-    });
+    this.loadCartDetails();
   }
 
-  
-
-  openPaymentOptions() {
-    this.showPaymentOptions = true;
+  loadCartDetails() {
+    // Fetch cart details (replace this with API call if needed)
+    this.cartItems = [
+      { productName: 'Product 1', quantity: 2, unitPrice: 500 },
+      { productName: 'Product 2', quantity: 1, unitPrice: 300 },
+    ];
+    this.calculateTotal();
   }
 
-  closePaymentOptions() {
-    this.showPaymentOptions = false;
+  calculateTotal() {
+    this.totalAmount = this.cartItems.reduce((sum, item) => sum + item.unitPrice * item.quantity, 0);
   }
 
-  simulatePayment(method: string) {
-    alert(`Payment successful through ${method}!`);
-    this.cartService.clearCart(); // Clear the cart
-    this.router.navigate(['/']); // Redirect to products page
+  placeOrder() {
+    if (!this.order.fullName || !this.order.address || !this.order.city || !this.order.zipCode || !this.order.paymentMethod) {
+      alert('Please fill in all required fields.');
+      return;
+    }
+
+    console.log('Order placed:', this.order);
+    alert('Order successfully placed!');
   }
 }

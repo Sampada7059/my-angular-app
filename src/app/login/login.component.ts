@@ -13,15 +13,20 @@ export class LoginComponent {
   password: string = '';
   errorMessage: string = ''; 
 
-  constructor(private authService: AuthService, private router: Router, private toastr : ToastrService) {}
+  constructor(private authService: AuthService, private router: Router, private toastr: ToastrService) {}
 
   onLogin(): void {
+    if (!this.username || !this.password) {
+      this.toastr.warning('Username and Password are required', 'Validation Error');
+      return;
+    }
+
     this.authService.login(this.username, this.password).subscribe({
       next: (response: any) => {
         if (response.token) {
           this.authService.handleLogin(response.token);
           this.router.navigate(['/productCards']); // Navigate to products after successful login
-  
+
           // Show success toast when login is successful
           this.toastr.success('Login successful!', 'Welcome Back!');
         }
@@ -33,7 +38,6 @@ export class LoginComponent {
       },
     });
   }
-  
 
   // Method to navigate to the register page
   navigateToRegister(): void {
@@ -43,5 +47,4 @@ export class LoginComponent {
   navigateToForgotPassword(): void {
     this.router.navigate(['/forgot-password']); // Navigate to forgot password page
   }
-  
 }

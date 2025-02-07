@@ -3,7 +3,8 @@
     <div class="col-md-6">
       <div class="signup-container">
         <h2 class="text-center">Create an Account</h2>
-        <form (ngSubmit)="onRegister()">
+        <form #signupForm="ngForm" (ngSubmit)="onRegister(signupForm)">
+          <!-- Username -->
           <div class="form-group">
             <label for="username">Username</label>
             <input
@@ -14,9 +15,16 @@
               name="username"
               required
               minlength="3"
+              #usernameCtrl="ngModel"
             />
+            <!-- Username validation error messages -->
+            <div *ngIf="usernameCtrl.touched && usernameCtrl.invalid" class="error">
+              <small *ngIf="usernameCtrl.errors?.['required']">Username is required.</small>
+              <small *ngIf="usernameCtrl.errors?.['minlength']">Username must be at least 3 characters.</small>
+            </div>
           </div>
 
+          <!-- Email -->
           <div class="form-group">
             <label for="email">Email</label>
             <input
@@ -26,9 +34,17 @@
               [(ngModel)]="email"
               name="email"
               required
+              email
+              #emailCtrl="ngModel"
             />
+            <!-- Email validation error messages -->
+            <div *ngIf="emailCtrl.touched && emailCtrl.invalid" class="error">
+              <small *ngIf="emailCtrl.errors?.['required']">Email is required.</small>
+              <small *ngIf="emailCtrl.errors?.['email']">Please enter a valid email.</small>
+            </div>
           </div>
 
+          <!-- Password -->
           <div class="form-group">
             <label for="password">Password</label>
             <input
@@ -39,9 +55,16 @@
               name="password"
               required
               minlength="6"
+              #passwordCtrl="ngModel"
             />
+            <!-- Password validation error messages -->
+            <div *ngIf="passwordCtrl.touched && passwordCtrl.invalid" class="error">
+              <small *ngIf="passwordCtrl.errors?.['required']">Password is required.</small>
+              <small *ngIf="passwordCtrl.errors?.['minlength']">Password must be at least 6 characters long.</small>
+            </div>
           </div>
 
+          <!-- Confirm Password -->
           <div class="form-group">
             <label for="confirmPassword">Confirm Password</label>
             <input
@@ -51,22 +74,31 @@
               [(ngModel)]="confirmPassword"
               name="confirmPassword"
               required
+              #confirmPasswordCtrl="ngModel"
             />
-            <div *ngIf="password !== confirmPassword && confirmPassword" class="error">
-              Passwords do not match.
+            <!-- Confirm Password validation error messages -->
+            <div *ngIf="confirmPasswordCtrl.touched && confirmPasswordCtrl.invalid" class="error">
+              <small *ngIf="confirmPasswordCtrl.errors?.['required']">Confirm Password is required.</small>
+              <small *ngIf="confirmPassword !== password && confirmPassword">Passwords do not match.</small>
             </div>
           </div>
 
-          <button type="submit" class="btn btn-primary w-100 mt-3" [disabled]="password !== confirmPassword">
+          <!-- Submit Button -->
+          <button
+            type="submit"
+            class="btn btn-primary w-100 mt-3"
+            [disabled]="signupForm.invalid || password !== confirmPassword"
+          >
             Register
           </button>
 
+          <!-- Error Message -->
           <div *ngIf="errorMessage" class="error-message">
             {{ errorMessage }}
           </div>
         </form>
 
-        <!-- Add Login button -->
+        <!-- Login Button -->
         <div class="login-link d-flex justify-content-center align-items-center mt-3">
           <p class="m-0">Already have an account?</p>
           <button class="btn btn-link m-0" (click)="navigateToLogin()">Login</button>
