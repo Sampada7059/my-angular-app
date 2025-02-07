@@ -8,14 +8,17 @@ import { ProductService, Product } from 'src/app/services/product.service';
   styleUrls: ['./product-cards.component.css']
 })
 export class ProductCardsComponent implements OnInit {
-  
-  products: Product[] = []; // All products from the API
-  searchTerm: string = ''; // Bind this to the search input field
+  products: Product[] = [];
+  searchTerm: string = '';
+  hoveredProduct: Product | null = null; // Track the hovered product
 
-  constructor(private productService: ProductService, private cartService: CartService) {}
+  constructor(
+    private productService: ProductService,
+    private cartService: CartService
+  ) {}
 
   ngOnInit(): void {
-    this.loadProducts(); // Load products on component initialization
+    this.loadProducts();
   }
 
   loadProducts(): void {
@@ -23,22 +26,18 @@ export class ProductCardsComponent implements OnInit {
       next: (data) => {
         this.products = data;
         this.products.forEach(product => {
-          product.quantity = 1; // Set default quantity to 1 for each product
+          product.quantity = 1; // Initialize quantity
         });
       },
       error: (error) => {
         console.error('Error fetching products:', error);
-      },
-      complete: () => {
-        console.log('Products successfully loaded.');
       }
     });
   }
 
-  // Method to filter products based on the search term
   filteredProducts(): Product[] {
     if (!this.searchTerm.trim()) {
-      return this.products; // Return all products if the search term is empty
+      return this.products;
     }
     const lowerCaseSearch = this.searchTerm.toLowerCase();
     return this.products.filter(product =>
@@ -46,25 +45,22 @@ export class ProductCardsComponent implements OnInit {
     );
   }
 
-  // Method to decrease the quantity
   decreaseQuantity(product: Product): void {
     if (product.quantity > 1) {
       product.quantity--;
     }
   }
 
-  // Method to increase the quantity
   increaseQuantity(product: Product): void {
     if (product.quantity < 5) {
       product.quantity++;
     }
   }
 
-  // Add a product to the cart
   addToCart(product: Product): void {
     if (product.quantity && product.quantity > 0) {
-      this.cartService.addToCart(product, product.quantity); // Pass selected quantity
-      alert(`Added ${product.quantity} of "${product.product_Name}" to your cart!`);
+      this.cartService.addToCart(product, product.quantity);
+      alert(`Added "${product.product_Name}" to your cart!`);
     } else {
       alert('Please select a valid quantity before adding to the cart.');
     }

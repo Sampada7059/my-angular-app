@@ -1,18 +1,15 @@
 <div class="container mt-4">
-    <h2>Product List</h2>
-    
-    <!-- Add Product Button -->
-    <div class="mb-3">
-      <button
-        class="btn btn-primary"
-        routerLink="/add-product"
-      >
-        Add New Product
-      </button>
-    </div>
-  
-    <div>
-    <!-- Products Table -->
+  <h2 class="mb-4">Product List</h2>
+
+  <!-- Add Product Button -->
+  <div class="mb-3">
+    <button class="btn btn-primary" routerLink="/add-product">
+      <i class="bi bi-plus-circle me-2"></i>Add New Product
+    </button>
+  </div>
+
+  <!-- Products Table -->
+  <div class="table-responsive">
     <table class="table table-bordered table-striped">
       <thead>
         <tr>
@@ -25,35 +22,44 @@
         </tr>
       </thead>
       <tbody>
-
         <tr *ngFor="let product of products">
-          <td>{{ product.product_Name }}</td>
-          <td>{{ product.product_Type }}</td>
-          <td>{{ product.description }}</td>
-          <td>{{ product.price | currency:'INR' }}</td>
-          <td>{{ product.quantity }}</td>
-          <td>
-            <div class="d-flex gap-2">
+          <ng-container *ngIf="editingProduct?.product_Id === product.product_Id; else viewMode">
+            <!-- Edit Mode -->
+            <td><input *ngIf="editingProduct" [(ngModel)]="editingProduct.product_Name" class="form-control" /></td>
+            <td><input *ngIf="editingProduct" [(ngModel)]="editingProduct.product_Type" class="form-control" /></td>
+            <td><input *ngIf="editingProduct" [(ngModel)]="editingProduct.description" class="form-control" /></td>
+            <td><input *ngIf="editingProduct" [(ngModel)]="editingProduct.price" type="number" class="form-control" /></td>
+            <td><input *ngIf="editingProduct" [(ngModel)]="editingProduct.quantity" type="number" class="form-control" /></td>
+            <td>
+              <div class="row">
+                <div class="col-auto">
+                  <button class="btn btn-success btn-sm mb-2" (click)="saveProduct()">Save</button>
+                </div>
+                <div class="col-auto">
+                  <button class="btn btn-secondary btn-sm" (click)="cancelEditing()">Cancel</button>
+                </div>
+              </div>
+            </td>
+          </ng-container>
 
-            <!-- Edit Product Button -->
-            <button
-              class="btn btn-warning btn-sm"
-              [routerLink]="['/edit-product', product.product_Id]"
-            >
-              Edit
-            </button>
-  
-            <!-- Delete Product Button -->
-            <button
-              class="btn btn-danger btn-sm"
-              (click)="deleteProduct(product.product_Id)"
-            >
-              Delete
-            </button>
-          </div>
+          <ng-template #viewMode>
+            <!-- View Mode -->
+            <td>{{ product.product_Name }}</td>
+            <td>{{ product.product_Type }}</td>
+            <td>{{ product.description }}</td>
+            <td>{{ product.price | currency: 'INR' }}</td>
+            <td>{{ product.quantity }}</td>
+            <td>
+              <button class="btn btn-warning btn-sm me-2" (click)="editProduct(product)">
+                <i class="bi bi-pencil-square me-1"></i>
+              </button>
+              <button class="btn btn-danger btn-sm" (click)="deleteProduct(product.product_Id)">
+                <i class="bi bi-trash me-1"></i>
+              </button>
+            </td>
+          </ng-template>
         </tr>
       </tbody>
     </table>
-</div>
   </div>
-  
+</div>

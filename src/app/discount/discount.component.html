@@ -1,0 +1,108 @@
+<div class="container mt-4">
+  <h2>Discount List</h2>
+
+  <!-- Add Discount Button -->
+  <button class="btn btn-primary mb-3" (click)="navigateToAddDiscount()">
+    Add New Discount
+  </button>
+
+  <div>
+    <!-- Discounts Table -->
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th>Occasion Name</th>
+          <th>Discount Percentage</th>
+          <th>Start Date</th>
+          <th>End Date</th>
+          <th>Product Type</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let discount of discounts">
+          <ng-container *ngIf="editingId !== discount.occasionId; else editForm">
+            <!-- View Mode -->
+            <td>{{ discount.occasionName }}</td>
+            <td>{{ discount.discountPercentage }}%</td>
+            <td>{{ discount.startDate | date }}</td>
+            <td>{{ discount.endDate | date }}</td>
+            <td>{{ discount.productType }}</td>
+            <td>
+              <div class="d-flex gap-2">
+                <!-- Edit Discount Button -->
+                <button class="btn btn-warning" (click)="startEditing(discount)">
+                  Edit
+                </button>
+
+                <!-- Delete Discount Button -->
+                <button
+                  class="btn btn-danger btn-sm"
+                  (click)="deleteDiscount(discount.occasionId)"
+                >
+                  Delete
+                </button>
+              </div>
+            </td>
+          </ng-container>
+        </tr>
+
+        <!-- Edit Form Template -->
+        <ng-template #editForm>
+          <td>
+            <input
+            type="text"
+            [(ngModel)]="editingDiscount.occasionName"
+            class="form-control"
+            placeholder="Occasion Name"
+            required
+          />
+          </td>
+          <td>
+            <input
+              type="number"
+              [(ngModel)]="editingDiscount.discountPercentage"
+              class="form-control"
+            />
+          </td>
+          <td>
+            <input
+              type="date"
+              [(ngModel)]="editingDiscount.startDate"
+              class="form-control"
+            />
+          </td>
+          <td>
+            <input
+              type="date"
+              [(ngModel)]="editingDiscount.endDate"
+              class="form-control"
+            />
+          </td>
+          <td>
+            <input
+            type="text"
+            [(ngModel)]="editingDiscount.productType"
+            class="form-control"
+            placeholder="Product Type"
+            required
+          />
+          </td>
+          <td>
+            <div class="d-flex gap-2">
+              <!-- Save Button -->
+              <button class="btn btn-success btn-sm" (click)="saveDiscount()">
+                Save
+              </button>
+
+              <!-- Cancel Button -->
+              <button class="btn btn-secondary btn-sm" (click)="resetEditing()">
+                Cancel
+              </button>
+            </div>
+          </td>
+        </ng-template>
+      </tbody>
+    </table>
+  </div>
+</div>

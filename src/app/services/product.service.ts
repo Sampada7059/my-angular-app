@@ -1,47 +1,57 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
-// Define the Product interface
 export interface Product {
-  product_Id: number;
-  product_Name: string;
-  product_Type: string;
-  description: string;
-  price: number;
-  quantity: number;
-  available: boolean;
-  imagePath: string;
+    product_Id: number;
+    product_Name: string;
+    product_Type: string;
+    description: string;
+    price: number;
+    quantity: number;
+    available: boolean;
+    imagePath: string;
+    
+    cartAdditions?: number;
+    viewsCount?: number;
+    isAddtoCart? : boolean;
+    isShowDetails? : boolean;
+    discounted_Price?: number | null; 
+
 }
 
 @Injectable({
-  providedIn: 'root',
+    providedIn: 'root',
 })
 export class ProductService {
-  private apiUrl = 'https://localhost:7142/api/Products'; // Replace with your API's base URL
+    private apiUrl = environment.apiBaseUrl;
 
-  constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient) {}
 
-  // Get all products
-  getProducts(): Observable<Product[]> {
-    return this.http.get<Product[]>(this.apiUrl);
-  }
+    getProducts(): Observable<Product[]> {
+        return this.http.get<Product[]>(this.apiUrl);
+    }
 
-  getProductById(productId: number): Observable<Product> {
-    return this.http.get<Product>(`${this.apiUrl}/${productId}`);
-  }
-  // Add a new product
-  addProduct(product: FormData): Observable<Product> {
-    return this.http.post<Product>(this.apiUrl, product);
-  }
+    getProductById(id: number): Observable<Product> {
+        return this.http.get<Product>(`${this.apiUrl}/${id}`);
+    }
 
-  // Update an existing product
-  updateProduct(productId: number, product: FormData): Observable<void> {
-    return this.http.put<void>(`${this.apiUrl}/${productId}`, product);
-  }
+    addProduct(product: FormData): Observable<Product> {
+        return this.http.post<Product>(this.apiUrl, product);
+    }
 
-  // Delete a product
-  deleteProduct(productId: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${productId}`);
-  }
+    updateProduct(id: number, product: FormData): Observable<void> {
+        return this.http.put<void>(`${this.apiUrl}/${id}`, product);
+    }
+
+    deleteProduct(id: number): Observable<void> {
+        return this.http.delete<void>(`${this.apiUrl}/${id}`);
+    }
+
+    uploadImage(image: File): Observable<{ imagePath: string }> {
+        const formData = new FormData();
+        formData.append('image', image);
+        return this.http.post<{ imagePath: string }>(`${this.apiUrl}/upload`, formData);
+    }
 }

@@ -1,25 +1,7 @@
 /* Import FontAwesome only once globally to reduce redundant imports */
 @import "~@fortawesome/fontawesome-free/css/all.css";
 
-/* Navbar Styling */
-.navbar {
-  display: flex;
-  background: #333;
-}
 
-
-.navbar a {
-  color: white;
-  text-decoration: none;
-  padding: 0.5rem 1rem;
-  margin-right: 1rem;
-  border-radius: 4px;
-  transition: color 0.3s ease;
-}
-
-.navbar a:hover {
-  color: blueviolet;
-}
 
 /* Cart Icon */
 .cart-icon-container {
@@ -41,4 +23,9 @@
   padding: 2px 6px;
   min-width: 18px;
   text-align: center;
+}
+
+
+.text{
+  color : white;
 }

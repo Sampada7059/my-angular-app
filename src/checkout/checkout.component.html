@@ -1,4 +1,5 @@
-<div class="container">
+
+<div *ngIf="isLoggedIn" class="container">
   <h2 class="text-center">Checkout</h2>
 
   <div *ngFor="let item of cartItems" class="card mb-2">

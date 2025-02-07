@@ -1,15 +1,52 @@
-<nav class="navbar">
-    <a routerLink="/" routerLinkActive="active-link">Home</a>
-    <a routerLink="/products" routerLinkActive="active-link">Add Products</a>
-    <a routerLink="/productCards" routerLinkActive="active-link">Products</a>
-
-    <a routerLink="/cart" routerLinkActive="active-link">
-      <span class="cart-icon-container">
-        <i class="fa fa-shopping-cart"></i> <!-- Replace with your preferred icon -->
-        <span class="cart-count" *ngIf="cartCount > 0">{{ cartCount }}</span>
-      </span>
-    </a>
-</nav>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-dark">
+    <div class="container-fluid">
+      <!-- Brand name displayed when not logged in -->
+      <a *ngIf="!isLoggedIn" class="navbar-brand  text-light">E-Commerce Store</a>
   
-<router-outlet></router-outlet>
+      <button
+        class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+  
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <!-- Show navbar items only when logged in -->
+        <ul *ngIf="isLoggedIn" class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li *ngIf="isAdmin" class="nav-item">
+            <a class="nav-link active  text-light" routerLink="/products" routerLinkActive="active-link">Products List</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link  text-light" routerLink="/productCards" routerLinkActive="active-link">Products</a>
+          </li>
+          <li *ngIf="isAdmin" class="nav-item">
+            <a class="nav-link  text-light" routerLink="/discount" routerLinkActive="active-link">Discounts</a>
+          </li>
+        </ul>
+  
+        <!-- Show cart and logout only when logged in -->
+        <form *ngIf="isLoggedIn" class="d-flex align-items-center">
+          <a routerLink="/cart" routerLinkActive="active-link" class="d-flex align-items-center me-3">
+            <span class="cart-icon-container position-relative">
+              <i class="fa fa-shopping-cart fs-4"></i>
+              <span class="cart-count position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" *ngIf="cartCount > 0">{{ cartCount }}</span>
+            </span>
+          </a>
+          <button class="btn btn-outline-success" type="button" (click)="onLogout()">Logout</button>
+        </form>
+      </div>
+    </div>
+  </nav>
+  
 
+
+  <router-outlet></router-outlet>
+
+</body>
+</html>

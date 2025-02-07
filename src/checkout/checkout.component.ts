@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { CartService } from '../app/services/cart.service';
+import { CartService} from '../app/services/cart.service';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-checkout',
@@ -11,15 +12,23 @@ export class CheckoutComponent implements OnInit {
   cartItems: any[] = [];
   total: number = 0;
   showPaymentOptions: boolean = false;
+  isLoggedIn: boolean = false; 
 
-  constructor(private cartService: CartService, private router: Router) {}
+
+  constructor(private cartService: CartService, private router: Router, private authService: AuthService) {}
 
   ngOnInit(): void {
     this.cartService.getCartItems().subscribe(items => {
       this.cartItems = items;
       this.total = this.cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
     });
+
+    this.authService.isLoggedIn$.subscribe(status => {
+      this.isLoggedIn = status; // Update the login status when it changes
+    });
   }
+
+  
 
   openPaymentOptions() {
     this.showPaymentOptions = true;

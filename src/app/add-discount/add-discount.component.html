@@ -1,0 +1,67 @@
+<div class="container mt-4">
+    <h2>{{ discountId ? 'Edit Discount' : 'Add Discount' }}</h2>
+    
+    <!-- Form that uses discountForm for binding -->
+    <form [formGroup]="discountForm" (ngSubmit)="addDiscount()">
+      <div class="form-group">
+        <label for="occasionName">Occasion Name</label>
+        <input
+          type="text"
+          id="occasionName"
+          formControlName="occasion_Name"
+          class="form-control"
+          required
+        />
+      </div>
+  
+      <div class="form-group">
+        <label for="discountPercentage">Discount Percentage</label>
+        <input
+          type="number"
+          id="discountPercentage"
+          formControlName="discount_Percentage"
+          class="form-control"
+          required
+        />
+      </div>
+  
+      <div class="form-group">
+        <label for="startDate">Start Date</label>
+        <input
+          type="date"
+          id="startDate"
+          formControlName="start_Date"
+          class="form-control"
+          required
+        />
+      </div>
+  
+      <div class="form-group">
+        <label for="endDate">End Date</label>
+        <input
+          type="date"
+          id="endDate"
+          formControlName="end_Date"
+          class="form-control"
+          required
+        />
+      </div>
+  
+      <div class="form-group">
+        <label for="productType">Product Type</label>
+        <input
+          type="text"
+          id="productType"
+          formControlName="product_Types"
+          class="form-control"
+          required
+        />
+      </div>
+  
+      <button type="submit" class="btn btn-primary mt-3">
+        Add Discount
+      </button>
+      
+    </form>
+  </div>
+  

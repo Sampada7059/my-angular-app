@@ -1,93 +1,105 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <title>Product Cards</title>
-</head>
-<body>
-  <div class="container mt-4">
-    <!-- Search Bar -->
-    <div class="row mb-4">
-      <div class="col-12">
-        <input
-          type="text"
-          class="form-control"
-          placeholder="Search for products..."
-          [(ngModel)]="searchTerm"
-        />
-      </div>
+<div class="container mt-4">
+  <!-- Search Bar -->
+  <div class="row mb-4 justify-content-center">
+    <div class="col-8">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Search for products..."
+        [(ngModel)]="searchTerm"
+      />
     </div>
+  </div>
 
-    <!-- Product Cards -->
-    <div class="row">
-      <!-- Filtered Product Loop -->
-      <div
-        class="col-md-4 mb-4"
-        *ngFor="let product of filteredProducts()"
-      >
-        <div class="card h-100 shadow-sm">
-          <!-- Product Image -->
-          <img
-            [src]="product.imagePath"
-            class="card-img-top"
-            alt="{{ product.product_Name }}"
-          />
-          <div class="card-body d-flex flex-column">
-            <!-- Product Name -->
-            <h5 class="card-title text-primary text-center">
-              {{ product.product_Name }}
-            </h5>
+  <!-- Product Cards -->
+  <div class="row">
+    <div
+      class="col-md-4 mb-4"
+      *ngFor="let product of filteredProducts()"
+      (mouseleave)="hoveredProduct = null"
+    >
+      <div class="card h-100 shadow-sm position-relative">
+        <!-- Product Image -->
+        <img
+          [src]="product.imagePath"
+          class="card-img-top"
+          alt="{{ product.product_Name }}"
+        />
+        <div class="card-body d-flex flex-column">
+          <!-- Product Name -->
+          <h5 class="card-title text-primary text-center">{{ product.product_Name }}</h5>
+          <!-- Product Prices -->
+          <p class="card-text text-center">
+            <span *ngIf="product.discounted_Price !== null">
+              <strong class="text-success">
+                Offer Price: {{ product.discounted_Price | currency: 'INR' }}
+              </strong>
+            </span>
+            <br />
+            <span
+              [ngClass]="{
+                'text-decoration-line-through text-muted': product.discounted_Price !== null
+              }"
+            >
+              Price: {{ product.price | currency: 'INR' }}
+            </span>
+          </p>
 
-            <!-- Product Price -->
-            <p class="card-text text-center text-muted">
-              <strong>Price:</strong> {{ product.price | currency: 'INR' }}
-            </p>
-
-            <!-- Product Quantity -->
-            <div class="card-text text-center">
-              <strong>Quantity:</strong>
-              <div class="d-flex justify-content-center align-items-center mt-2">
-                <button
-                  class="btn btn-outline-primary btn-sm"
-                  (click)="decreaseQuantity(product)"
-                  [disabled]="product.quantity <= 1"
-                >
-                  -
-                </button>
-                <input
-                  type="number"
-                  [(ngModel)]="product.quantity"
-                  class="form-control form-control-sm mx-2 text-center w-25"
-                  min="1"
-                  max="5"
-                />
-                <button
-                  class="btn btn-outline-primary btn-sm"
-                  (click)="increaseQuantity(product)"
-                  [disabled]="product.quantity >= 5"
-                >
-                  +
-                </button>
-              </div>
+          <!-- Product Quantity -->
+          <div class="card-text text-center">
+            <strong>Quantity:</strong>
+            <div class="d-flex justify-content-center align-items-center mt-2">
+              <button
+                class="btn btn-outline-primary btn-sm"
+                (click)="decreaseQuantity(product)"
+                [disabled]="product.quantity <= 1"
+              >
+                -
+              </button>
+              <input
+                type="number"
+                [(ngModel)]="product.quantity"
+                class="form-control form-control-sm mx-2 text-center w-25"
+                min="1"
+                max="5"
+              />
+              <button
+                class="btn btn-outline-primary btn-sm"
+                (click)="increaseQuantity(product)"
+                [disabled]="product.quantity >= 5"
+              >
+                +
+              </button>
             </div>
           </div>
+        </div>
 
-          <!-- Footer with Buttons -->
-          <div class="card-footer d-flex justify-content-between">
-            <!-- Add to Cart Button -->
-            <button class="btn btn-success w-45" (click)="addToCart(product)">
-              Add to Cart
-            </button>
-            <!-- Show Details Button -->
-            <button class="btn btn-danger w-45">
-              Show Details
-            </button>
-          </div>
+        <!-- Footer with Buttons -->
+        <div class="card-footer d-flex justify-content-between">
+          <button class="btn btn-success w-45" (click)="addToCart(product)">
+            Add to Cart
+          </button>
+          <button
+            class="btn btn-danger w-45"
+            (mouseenter)="hoveredProduct = product"
+          >
+            Show Details
+          </button>
+        </div>
+
+        <!-- Floating Card -->
+        <div
+          *ngIf="hoveredProduct === product"
+          class="floating-details card bg-light position-absolute shadow p-3"
+        >
+          <h6 class="text-primary">{{ product.product_Name }}</h6>
+          <p><strong>Price:</strong> {{ product.price | currency: 'INR' }}</p>
+          <p *ngIf="product.discounted_Price">
+            <strong>Offer Price:</strong> {{ product.discounted_Price | currency: 'INR' }}
+          </p>
+          <p><strong>Description:</strong> {{ product.description }}</p>
         </div>
       </div>
     </div>
   </div>
-</body>
-</html>
+</div>

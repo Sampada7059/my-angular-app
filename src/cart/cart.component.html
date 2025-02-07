@@ -41,17 +41,10 @@
   <!-- Cart Action Buttons -->
   <div class="cart-actions">
     <button
-      class="btn btn-warning"
-      [disabled]="isCartEmpty"
-      (click)="clearCart()"
-    >
-      Clear Cart
+      class="btn btn-warning" [disabled]="isCartEmpty" (click)="clearCart()">Clear Cart
     </button>
     <button
-      class="btn btn-success"
-      [disabled]="isCartEmpty"
-      [routerLink]="['/checkout']"
-    >
+      class="btn btn-success" [disabled]="isCartEmpty" [routerLink]="['/checkout']">
       Proceed to Checkout
     </button>
   </div>

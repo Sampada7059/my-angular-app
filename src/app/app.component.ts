@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AuthService } from './services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -6,21 +7,10 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  message: string = 'Initial message';
+  constructor(private authService: AuthService) {}
 
-  onClick() {
-    this.message = 'Button was clicked!';
+  ngOnInit(): void {
+    this.authService.checkLoginStatus(); // Initialize login state
   }
-  // userInput: string = '';
-  message2: string = 'Hover over the box';
-
-  formData: string = '';
-
-  onSubmit(event: Event) {
-    event.preventDefault();
-    this.formData = 'Form submitted!';
-  }
-
-  userInput: string = '';
  
 }

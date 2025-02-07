@@ -13,7 +13,7 @@ body {
 
 .card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: none; /* No shadow on product card */
 }
 
 .card-img-top {
@@ -74,5 +74,78 @@ input[type="number"] {
 
   input[type="number"] {
     width: 35px;
+  }
+}
+
+.original-price {
+  text-decoration: line-through;
+  color: red;
+  margin-right: 10px;
+}
+
+.discounted-price {
+  color: green;
+  font-weight: bold;
+}
+
+/* Floating Card Styling */
+.floating-card {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: white;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* Shadow on floating card */
+  border: 1px solid #ddd;
+  padding: 20px;
+  z-index: 1000;
+  width: calc(100% - 20px); /* Dynamic width based on card size */
+  max-width: 300px;
+  border-radius: 10px;
+  transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out;
+  transform: translateY(-10px); /* Initial position for the floating card */
+}
+
+/* Floating Card Hover Effect */
+.floating-card:hover {
+  transform: translateY(0);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.3); /* Shadow on hover */
+}
+
+/* Floating Card Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.floating-card {
+  animation: fadeIn 0.3s ease-in-out; /* Fade-in effect for floating card */
+}
+
+/* Floating Card Highlight Bar */
+.floating-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  height: 5px;
+  background-color: #f39c12;
+  border-radius: 10px 10px 0 0;
+}
+
+/* Responsive Floating Card */
+@media (max-width: 768px) {
+  .floating-card {
+    width: 100%;
+    left: 0;
+    top: 0;
+    transform: translateY(10px);
   }
 }
